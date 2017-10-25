@@ -14,8 +14,8 @@ func UnmarshalResponse(t int, msg []byte) *protocol.Response {
 		Error             protocol.ErrorCode
 		DirectoryResponse json.RawMessage
 	}
-	var res Response
-	if err := json.Unmarshal(msg, &res); err != nil {
+	var resp Response
+	if err := json.Unmarshal(msg, &resp); err != nil {
 		return &protocol.Response{
 			Error: protocol.ErrMalformedMessage,
 		}
@@ -23,27 +23,39 @@ func UnmarshalResponse(t int, msg []byte) *protocol.Response {
 
 	// DirectoryResponse is omitempty for the places
 	// where Error is in Errors
-	if res.DirectoryResponse == nil {
-		if !protocol.Errors[res.Error] {
+	if resp.DirectoryResponse == nil {
+		response := &protocol.Response{
+			Error: resp.Error,
+		}
+		if err := response.Validate(); err != nil {
 			return &protocol.Response{
 				Error: protocol.ErrMalformedMessage,
 			}
 		}
-		return &protocol.Response{
-			Error: res.Error,
-		}
+		return response
 	}
 
 	switch t {
-	case protocol.RegistrationType, protocol.KeyLookupType, protocol.KeyLookupInEpochType, protocol.MonitoringType:
+	case protocol.RegistrationType, protocol.KeyLookupInEpochType, protocol.MonitoringType:
 		response := new(protocol.DirectoryProof)
-		if err := json.Unmarshal(res.DirectoryResponse, &response); err != nil {
+		if err := json.Unmarshal(resp.DirectoryResponse, &response); err != nil {
 			return &protocol.Response{
 				Error: protocol.ErrMalformedMessage,
 			}
 		}
 		return &protocol.Response{
-			Error:             res.Error,
+			Error:             resp.Error,
+			DirectoryResponse: response,
+		}
+	case protocol.STRType:
+		response := new(protocol.STRHistoryRange)
+		if err := json.Unmarshal(resp.DirectoryResponse, &response); err != nil {
+			return &protocol.Response{
+				Error: protocol.ErrMalformedMessage,
+			}
+		}
+		return &protocol.Response{
+			Error:             resp.Error,
 			DirectoryResponse: response,
 		}
 	default:
