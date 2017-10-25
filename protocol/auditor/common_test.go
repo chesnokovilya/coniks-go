@@ -20,7 +20,7 @@ func TestComputeDirectoryIdentity(t *testing.T) {
 		str  *protocol.DirSTR
 		want []byte
 	}{
-		{"normal", str0, dh("fd0584f79054f8113f21e5450e0ad21c9221fc159334c7bc1644e3e2a0fb5060")},
+		{"normal", str0, dh("b2c6300df0d0d0fb26c3be959a33cc978fc1969090fd19d95dd76cd43b809949")},
 		{"panic", str1, []byte{}},
 	}
 	for _, tt := range tests {
