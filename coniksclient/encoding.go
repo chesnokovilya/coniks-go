@@ -36,7 +36,7 @@ func UnmarshalResponse(t int, msg []byte) *protocol.Response {
 	}
 
 	switch t {
-	case protocol.RegistrationType, protocol.KeyLookupInEpochType, protocol.MonitoringType:
+	case protocol.RegistrationType, protocol.KeyLookupType, protocol.KeyLookupInEpochType, protocol.MonitoringType:
 		response := new(protocol.DirectoryProof)
 		if err := json.Unmarshal(resp.DirectoryResponse, &response); err != nil {
 			return &protocol.Response{
