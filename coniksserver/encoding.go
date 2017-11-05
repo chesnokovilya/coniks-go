@@ -10,11 +10,6 @@ import (
 	"github.com/coniks-sys/coniks-go/protocol"
 )
 
-// MarshalResponse returns a JSON encoding of the server's response.
-func MarshalResponse(response *protocol.Response) ([]byte, error) {
-	return json.Marshal(response)
-}
-
 // UnmarshalRequest parses a JSON-encoded request msg and
 // creates the corresponding protocol.Request, which will be handled
 // by the server.

@@ -11,6 +11,7 @@ import (
 	"github.com/coniks-sys/coniks-go/coniksserver/testutil"
 	"github.com/coniks-sys/coniks-go/protocol"
 	"github.com/coniks-sys/coniks-go/protocol/client"
+	"github.com/coniks-sys/coniks-go/utils"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -138,7 +139,7 @@ func register(cc *client.ConsistencyChecks, conf *coniksclient.Config, name stri
 		return ("Invalid config!")
 	}
 
-	response := coniksclient.UnmarshalResponse(protocol.RegistrationType, res)
+	response := utils.UnmarshalResponse(protocol.RegistrationType, res)
 	err = cc.HandleResponse(protocol.RegistrationType, response, name, []byte(key))
 	switch err {
 	case protocol.CheckBadSTR:

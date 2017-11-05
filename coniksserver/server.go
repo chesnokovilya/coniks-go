@@ -18,6 +18,7 @@ import (
 	"github.com/coniks-sys/coniks-go/protocol"
 	"github.com/coniks-sys/coniks-go/protocol/directory"
 	"github.com/coniks-sys/coniks-go/utils"
+	"github.com/coniks-sys/coniks-go/utils/binutils"
 )
 
 // A ServerConfig contains configuration values
@@ -31,7 +32,7 @@ type ServerConfig struct {
 	Policies *ServerPolicies `toml:"policies"`
 	// Addresses contains the server's connections configuration.
 	Addresses      []*Address          `toml:"addresses"`
-	Logger         *utils.LoggerConfig `toml:"logger"`
+	Logger         *binutils.LoggerConfig `toml:"logger"`
 	configFilePath string
 }
 
@@ -82,7 +83,7 @@ type ServerPolicies struct {
 // a mechanism to update the underlying ConiksDirectory automatically
 // at regular time intervals.
 type ConiksServer struct {
-	logger *utils.Logger
+	logger *binutils.Logger
 
 	sync.RWMutex
 	dir *directory.ConiksDirectory
@@ -145,7 +146,7 @@ func LoadServerConfig(file string) (*ServerConfig, error) {
 func NewConiksServer(conf *ServerConfig) *ConiksServer {
 	// create server instance
 	server := new(ConiksServer)
-	server.logger = utils.NewLogger(conf.Logger)
+	server.logger = binutils.NewLogger(conf.Logger)
 	server.dir = directory.New(
 		conf.Policies.EpochDeadline,
 		conf.Policies.vrfKey,

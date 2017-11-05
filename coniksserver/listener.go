@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/coniks-sys/coniks-go/protocol"
+	"github.com/coniks-sys/coniks-go/utils/binutils"
 )
 
 func (server *ConiksServer) handleRequests(ln net.Listener, tlsConfig *tls.Config,
@@ -73,7 +74,7 @@ func (server *ConiksServer) acceptClient(conn net.Conn, handler func(req *protoc
 	}
 
 	// marshalling
-	res, e := MarshalResponse(response)
+	res, e := binutils.MarshalResponse(response)
 	if e != nil {
 		panic(e)
 	}
