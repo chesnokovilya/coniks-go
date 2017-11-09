@@ -31,7 +31,7 @@ type ServerConfig struct {
 	// Policies contains the server's CONIKS policies configuration.
 	Policies *ServerPolicies `toml:"policies"`
 	// Addresses contains the server's connections configuration.
-	Addresses      []*Address          `toml:"addresses"`
+	Addresses      []*Address             `toml:"addresses"`
 	Logger         *binutils.LoggerConfig `toml:"logger"`
 	configFilePath string
 }

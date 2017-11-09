@@ -13,6 +13,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/coniks-sys/coniks-go/coniksserver"
 	"github.com/coniks-sys/coniks-go/protocol"
+	"github.com/coniks-sys/coniks-go/utils/binutils"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 )
@@ -180,7 +181,7 @@ func (bot *TwitterBot) HandleRegistration(username string, msg []byte) string {
 	}
 	if invalid {
 		log.Println("[registration bot] Malformed client request")
-		res, err := coniksserver.MarshalResponse(
+		res, err := binutils.MarshalResponse(
 			protocol.NewErrorResponse(protocol.ErrMalformedMessage))
 		if err != nil {
 			panic(err)
@@ -192,7 +193,7 @@ func (bot *TwitterBot) HandleRegistration(username string, msg []byte) string {
 	res, err := SendRequestToCONIKS(bot.coniksAddress, msg)
 	if err != nil {
 		log.Println("[registration bot] " + err.Error())
-		res, err := coniksserver.MarshalResponse(
+		res, err := binutils.MarshalResponse(
 			protocol.NewErrorResponse(protocol.ErrDirectory))
 		if err != nil {
 			panic(err)

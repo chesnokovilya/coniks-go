@@ -11,7 +11,7 @@ import (
 	"github.com/coniks-sys/coniks-go/coniksserver/testutil"
 	"github.com/coniks-sys/coniks-go/protocol"
 	"github.com/coniks-sys/coniks-go/protocol/client"
-	"github.com/coniks-sys/coniks-go/utils"
+	"github.com/coniks-sys/coniks-go/utils/binutils"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -139,7 +139,7 @@ func register(cc *client.ConsistencyChecks, conf *coniksclient.Config, name stri
 		return ("Invalid config!")
 	}
 
-	response := utils.UnmarshalResponse(protocol.RegistrationType, res)
+	response := binutils.UnmarshalResponse(protocol.RegistrationType, res)
 	err = cc.HandleResponse(protocol.RegistrationType, response, name, []byte(key))
 	switch err {
 	case protocol.CheckBadSTR:
@@ -192,7 +192,7 @@ func keyLookup(cc *client.ConsistencyChecks, conf *coniksclient.Config, name str
 		return ("Invalid config!")
 	}
 
-	response := coniksclient.UnmarshalResponse(protocol.KeyLookupType, res)
+	response := binutils.UnmarshalResponse(protocol.KeyLookupType, res)
 	if key, ok := cc.Bindings[name]; ok {
 		err = cc.HandleResponse(protocol.KeyLookupType, response, name, []byte(key))
 	} else {
