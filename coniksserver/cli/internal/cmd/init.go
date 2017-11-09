@@ -56,6 +56,7 @@ func mkConfig(dir string) {
 	var conf = coniksserver.ServerConfig{
 		LoadedHistoryLength: 1000000,
 		Addresses:           addrs,
+		InitSTRPath:         "init_str",
 		Policies: &coniksserver.ServerPolicies{
 			EpochDeadline: 60,
 			VRFKeyPath:    "vrf.priv",

@@ -30,6 +30,8 @@ type ServerConfig struct {
 	LoadedHistoryLength uint64 `toml:"loaded_history_length"`
 	// Policies contains the server's CONIKS policies configuration.
 	Policies *ServerPolicies `toml:"policies"`
+	// Path to store the initial STR
+	InitSTRPath string `toml:"init_str_path"`
 	// Addresses contains the server's connections configuration.
 	Addresses      []*Address             `toml:"addresses"`
 	Logger         *binutils.LoggerConfig `toml:"logger"`
@@ -153,6 +155,11 @@ func NewConiksServer(conf *ServerConfig) *ConiksServer {
 		conf.Policies.signKey,
 		conf.LoadedHistoryLength,
 		true)
+
+	// save the initial STR to be used for initializing auditors
+	initSTRPath := utils.ResolvePath(conf.InitSTRPath, conf.configFilePath)
+	binutils.MarshalSTRToFile(server.dir.LatestSTR(), initSTRPath)
+
 	server.stop = make(chan struct{})
 	server.configFilePath = conf.configFilePath
 	server.reloadChan = make(chan os.Signal, 1)
